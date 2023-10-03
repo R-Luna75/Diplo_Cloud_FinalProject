@@ -26,6 +26,10 @@ Las funciones que se espera que la aplicación relice sobre la base de datos son
 * Devolver el listado completo de Registros (GET)
 * Devolver la información de un Registro en específico basado en su ID (GET)
 
+A continuación se muestra un ejemplo de como funcionaría la aplicación e ilustra el motivo por el que sería considerado como una aplicación nativa de Cloud. La imagen fue hecha en conjunto por miembros del grupo de trabajo durante la sesión del diplomado del Sabado 30 de Septiembre.
+
+![imagen 1](https://github.com/R-Luna75/Diplo_Cloud_FinalProject/assets/68251180/392ea187-a79f-47ff-8a7c-f327018a4297)
+
 ### Guia de despliegue
 
 
