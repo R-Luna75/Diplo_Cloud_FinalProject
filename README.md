@@ -30,19 +30,50 @@ A continuación se muestra un ejemplo de como funcionaría la aplicación e ilus
 
 ![imagen 1](https://github.com/R-Luna75/Diplo_Cloud_FinalProject/assets/68251180/392ea187-a79f-47ff-8a7c-f327018a4297)
 
-### Guia de despliegue
 
+Existen varias justificaciones para asegurar que la aplicación que se plantea en este repositorio cumple con todas las características para ser considerada como Nativa de Cloud, entre las que se destacan las siguientes:
+1. El Codigo Base de la aplicación ya se encuentra en un repositorio desde donde se puede realizar control de versiones y despliegues.
+2. Las dependencias de la aplicación esta correctamente aisladas y explícitamente definidas dentro de ella.
+3. Las configuraciones de la aplicación se realizan dentro del entorno y no externamente.
+4. 
+5. Gracias a las dependencias que se hacen uso para la aplicación, la etapa de construcción y ejecución pueden ser perfectamente separables.
+6. y
+7. y
+8. 
+9. La aplicación es perfectamente escalable sin la intervención externa, una vez ya ejecutándose.
+10. El inicio y cierre rápido de la aplicación es asegurado gracias a su simplicidad.
+11. Se espera que el desarrollo y producción de la aplicación sean similares gracias al uso de dependencias que ayudan al desarrollo y pruebas de la aplicación.
+12. 
+
+El resto de características necesarias para asegurar que la aplicación sea nativa de nube aun están por cumplirse con el resto del desarrollo del proyecto..
+
+### Guia de despliegue
 
 
 ### Instrucciones para ejecución
 
-Para la correcta ejecución de la aplicación, planteo que se utilicen los siguientes `curls` para validar el 
-despliege del servicio.
+Para ejecutar el proyecto en un entorno local, se puedne seguir los siguientes pasos:
+
+* Clonar el repositorio en la máquina local.
+* Abrire el proyecto en un entorno de desarrollo.
+* Asegurar de tener las dependencias necesarias instaladas y propiamente actualizadas, principalmente Spring Boot y Swagger.
+* Ejecuta la aplicación desde el IDE.
+
+Con las configuraciones actuales de la aplicación, esta estará disponible en http://localhost:8083, aunque se puede configurar el puerto a conveniencia dentro del archivo de propiedades de Spring Boot. Actualmente, algunas de las variables relevantes para la configuración y correcto despliege local de la aplicación, son las siguientes.
+
+* spring.data.mongodb.host=localhost
+* spring.data.mongodb.port=27017
+* spring.data.mongodb.authentication-database=admin
+* spring.data.mongodb.database=discodb
+* spring.data.mongodb.username=disco_owner
+* spring.data.mongodb.password=disco_password
+* server.port=8083
+
+Para desplegar la aplicación en un ambiente de nube, aun se necesita profundizar sobre contenderos y docker. Esto será principalmente de ayuda para asegurar que la aplicación siempre tenga acceso a las versiones de dependencias necesarias para su correcto funcionamiento. 
 
 ### Pruebas del Servicio
 
 Para probbar los Endpoints de la API se pueden utilizar herramientas como Postman o Curl. Por fines de practicidad, a continuación se detallan algunos ejemplos de Curls con los que se espera que la aplicación trabaje apropiadamente gracias a los métodos definidos en su interfaz API.
-Como nota, el puerto que se plantea utilizar para la aplicación sería el 8083, aunque está sujeto a cambios y será actualizado en esta documentación.
 
 Curl para crear un nuevo registro
 
@@ -162,5 +193,8 @@ El resultado esperado para el curl anterior seria el siguiente:
     ...
 }
 ```
+
+Como nota, el puerto que se plantea utilizar para la aplicación sería el 8083, aunque está sujeto a cambios y será actualizado en esta documentación.
+Por otro lado, en el archivo API_Documentation_Example.yaml se muestran las especificaciones de una API que corresponden a una aplicación con funcionalidades muy similares a las que se plantean en este repositorio. Se recomienda revisar este archivo para darse una idea sobre las especificaciones que tendrá la API de esta aplicación una vez que haya terminado su desarrollo. Cuando las especificaciones finales esten listas, se añadirá en este repositorio un archivo YAML similar al del ejemplo, pero con las características reales de la aplicación.
 
 
