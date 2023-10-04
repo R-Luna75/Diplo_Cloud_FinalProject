@@ -1,7 +1,7 @@
 # Proyecto final para Diplomado Cloud de la UNAM
 ## Autor: Rodrigo Luna Esquivel
 
-En este repositorio se encontrará el código, referencias, y demás artefactos necesarios para probar y desplegar una aplicación en ambientes híbridos de cloud.
+En este repositorio se encontrará el código, referencias, y demás artefactos necesarios para probar y desplegar una aplicación en nativa de cloud escrita en lenguaje Java principalmente.
 El funcionamiento de la aplicación se detalla a continuación.
 
 ### Descripción de la aplicación
@@ -36,8 +36,13 @@ A continuación se muestra un ejemplo de como funcionaría la aplicación e ilus
 
 ### Instrucciones para ejecución
 
-Para la correcta ejecució de la aplicación, planteo que se utilicen los siguientes `curls` para validar el 
+Para la correcta ejecución de la aplicación, planteo que se utilicen los siguientes `curls` para validar el 
 despliege del servicio.
+
+### Pruebas del Servicio
+
+Para probbar los Endpoints de la API se pueden utilizar herramientas como Postman o Curl. Por fines de practicidad, a continuación se detallan algunos ejemplos de Curls con los que se espera que la aplicación trabaje apropiadamente gracias a los métodos definidos en su interfaz API.
+Como nota, el puerto que se plantea utilizar para la aplicación sería el 8083, aunque está sujeto a cambios y será actualizado en esta documentación.
 
 Curl para crear un nuevo registro
 
@@ -47,7 +52,7 @@ curl -X 'POST' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
-    "idLibro": "64f76d1d08199c722d6bc041",
+    "id": "64f76d1d08199c722d6bc041",
     "Nombre": "Libro 1"
     ...
     ...
@@ -59,9 +64,7 @@ El resultado esperado para el curl anterior seria el siguiente:
 
 ```
 {
-    "id": "65172566daeae0673186f249",
-    "fechaRegistro": "2023-10-29T13:28:38.327-06:00",
-    "idLibro": "64f76d1d08199c722d6bc041",
+    "id": "64f76d1d08199c722d6bc041",
     "Nombre": "Libro 1"
     ...
     ...
@@ -82,9 +85,7 @@ El resultado esperado para el curl anterior seria el siguiente:
 ```
 [
   {
-      "id": "65172566daeae0673186f249",
-      "fechaRegistro": "2023-10-29T13:28:38.327-06:00",
-      "idLibro": "64f76d1d08199c722d6bc041",
+      "id": "64f76d1d08199c722d6bc041",
       "Nombre": "Libro 2"
       ...
       ...
@@ -92,9 +93,7 @@ El resultado esperado para el curl anterior seria el siguiente:
   }
 
   {
-        "id": "14353432aeae245151451",
-        "fechaRegistro": "2023-10-29T13:28:38.327-06:01",
-        "idLibro": "76f456d1d456156c465d6bc087",
+        "id": "76f456d1d456156c465d6bc087",
         "Nombre": "Libro 2"
         ...
         ...
@@ -128,9 +127,7 @@ El resultado esperado para el curl anterior seria el siguiente:
 
 ```
 {
-    "id": "65172566daeae0673186f249",
-    "fechaRegistro": "2023-10-29T13:28:38.327-06:00",
-    "idLibro": "64f76d1d08199c722d6bc041",
+    "id": "64f76d1d08199c722d6bc041",
     "Nombre": "Libro 1"
     ...
     ...
@@ -146,7 +143,7 @@ curl -X 'PUT' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
-    "idLibro": "64f76d1d08199c722d6bc041",
+    "id": "64f76d1d08199c722d6bc041",
     "Nombre": "Libro 3"
     ...
     ...
@@ -158,9 +155,7 @@ El resultado esperado para el curl anterior seria el siguiente:
 
 ```
 {
-    "id": "2341400dd7g7ds8s990sds8732489",
-    "fechaRegistro": "2023-10-29T13:28:38.327-07:00",
-    "idLibro": "64f76d1d08199c722d6bc041",
+    "id": "64f76d1d08199c722d6bc041",
     "Nombre": "Libro 3"
     ...
     ...
@@ -169,4 +164,3 @@ El resultado esperado para el curl anterior seria el siguiente:
 ```
 
 
-### Pruebas del Servicio
