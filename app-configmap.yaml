@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: final-proy-configmap
+data:
+  hostname: mongodb+srv://Rluna75:BQfqBqKJMCtMdmbo@cluster.96ny5ap.mongodb.net/unam
+  db: unam
+  user: Rluna75
+  pwd: BQfqBqKJMCtMdmbo
+  tomcat_port: "8080"
