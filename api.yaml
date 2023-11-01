@@ -1,0 +1,126 @@
+openapi: 3.0.1
+info:
+  title: Proyecto Final Microservice Endpoints
+  description: Definición de los Endpoints del servicio de registros de libros para
+    el Proyecto Final del Diplomado.
+  contact:
+    name: UNAM
+    url: https://www.unam.mx/
+    email: lunaesquivelrodrigo@gmail.com
+  version: v1
+servers:
+- url: http://localhost:8081
+  description: Generated server url
+tags:
+- name: libro
+  description: Api del Recurso Libro
+paths:
+  /api/libros/{id}:
+    get:
+      tags:
+      - libro
+      summary: Obtener Libro por Id
+      operationId: obtenerLibroPorId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Libro Obtenido Exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Libro'
+        "404":
+          description: Libro no encontrado
+    put:
+      tags:
+      - libro
+      summary: Actualizar Libro por Id
+      operationId: actualizarLibro
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Libro'
+        required: true
+      responses:
+        "404":
+          description: Libro no encontrado
+        "200":
+          description: Libro Actualizado Exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Libro'
+    delete:
+      tags:
+      - libro
+      summary: Eliminar Libro por Id
+      operationId: eliminarLibro
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Libro Eliminado
+  /api/libros:
+    get:
+      tags:
+      - libro
+      summary: Obtener Libros
+      operationId: obtenerLibros
+      responses:
+        "200":
+          description: Libros Obtenidos Exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Libro'
+    post:
+      tags:
+      - libro
+      summary: Crear Libro
+      operationId: crearLibro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Libro'
+        required: true
+      responses:
+        "201":
+          description: Libro Creado Exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Libro'
+components:
+  schemas:
+    Libro:
+      type: object
+      properties:
+        id:
+          type: string
+        nombre:
+          type: string
+        autor:
+          type: string
+        calif:
+          type: string
+        launch_date:
+          type: string
