@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: final-proy-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: final-proy
+  template:
+    metadata:
+      labels:
+        app: final-proy
+    spec:
+      containers:
+      - name: final-proy-container
+        image: rluna75/cloud-proyecto-final:v4
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MONGO_HOSTNAME
+          valueFrom:
+            configMapKeyRef:
+              name: final-proy-configmap
+              key: hostname
+        - name: MONGO_DB
+          valueFrom:
+            configMapKeyRef:
+              name: final-proy-configmap
+              key: db
+        - name: MONGO_USER
+          valueFrom:
+            configMapKeyRef:
+              name: final-proy-configmap
+              key: user
+        - name: MONGO_PWD
+          valueFrom:
+            configMapKeyRef:
+              name: final-proy-configmap
+              key: pwd
+        - name: TOMCAT_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: final-proy-configmap
+              key: tomcat_port
