@@ -43,6 +43,7 @@ El resto de características necesarias para asegurar que la aplicación sea nat
 
 ### Guía de despliegue
 
+`dev` branch for validate before pre-prod envviroment.
 
 ### Instrucciones para ejecución
 
