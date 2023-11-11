@@ -41,6 +41,16 @@ Existen varias justificaciones para asegurar que la aplicación que se plantea e
 
 El resto de características necesarias para asegurar que la aplicación sea nativa de nube aun están por cumplirse con el resto del desarrollo del proyecto.
 
+### Estrategia de Ramas
+
+Considerando un proyecto de 6 personas, la estrategia de ramas que considero óptima sería tener una rama principal Main, donde se encuentre la última versión del código que sea estable y funcional para producción. Luego, se debe tener una rama secundaria, o de desarrollo, de nombre Dev (Development), donde se fusionen y prueben todas las nuevas características en conjunto, de modo que se intercepten y solucionen problemas oportunamente antes de integrar las nuevas características a producción (Main).
+
+Luego, dependiendo del trabajo que tenga cada una de las 6 personas del equipo, van a haber una cierta cantidad de Ramas de Características (features). Estas ramas son para introducir y probar por separado cada nueva característica que se desea añadir a la aplicación. Lo óptimo sería que cada desarrollador trabaje en su propia característica, y por lo tanto su propia rama, para que así su trabajo no interfiera con el de otros. Cuando la característica esté completa y validada, se deberá fusionar con la rama de desarrollo (Dev). Entonces, en este caso, la cantidad de Ramas de Características va a depender de las características que se vayan añadiendo a la aplicación.
+
+Finalmente, debe haber Ramas para Corrección de Errores críticos para producción (Hotfix). Estas ramas son para solucionar errores urgentes de la rama de producción (Main) sin la necesidad de crear nuevas ramas de características (features), y sin afectar el desarrollo de otras ramas. La cantidad de ramas Hotfix va a depender de la cantidad de veces que haya que solucionar problemas de este tipo. 
+
+En conclusión, para un proyecto de 6 personas, por lo menos deben existir las ramas de desarrollo (Main) y de producción (Dev). Alternamente, van a existir una cierta cantidad de ramas de características (features) y para solución de errores (Hotfix), las cuales se van a ir creando conforme el proyecto las vaya requiriendo. Es importante señalar que lo óptimo para las ramas de características y de solución de errores es que cada rama sea trabajada por un solo integrante del proyecto. 
+
 ### Guía de despliegue
 
 `dev` branch for validate before pre-prod envviroment.
