@@ -5,7 +5,7 @@ ENV MONGO_HOSTNAME mongodb+srv://Rluna75:BQfqBqKJMCtMdmbo@cluster.96ny5ap.mongod
 ENV MONGO_DB unam
 ENV MONGO_USER Rluna75
 ENV MONGO_PWD BQfqBqKJMCtMdmbo
-ENV TOMCAT_PORT 8080
+# ENV TOMCAT_PORT 8080
 
 # Copia los archivos de configuración y el código fuente
 COPY src /usr/src/app/src
