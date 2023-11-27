@@ -1,5 +1,5 @@
 # Usa la imagen oficial de Maven como imagen base
-FROM maven:3.8.4-openjdk-17-slim AS build
+FROM maven:3.8.4-docker.io/openjdk:17.0.2-slim  AS build
 
 ENV MONGO_HOSTNAME mongodb+srv://Rluna75:BQfqBqKJMCtMdmbo@cluster.96ny5ap.mongodb.net/unam
 ENV MONGO_DB unam
