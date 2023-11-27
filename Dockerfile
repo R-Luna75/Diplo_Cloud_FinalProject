@@ -17,7 +17,7 @@ RUN mvn clean install
 # Cambia a una imagen más ligera de Java para la ejecución
 # FROM openjdk:17-jre-slim
 # FROM openjdk:17-jdk-alpine
-FROM openjdk:17-oracle
+FROM docker.io/openjdk:17-oracle
 MAINTAINER Alfonso Rivero <alfonsorivero@midas-mx.com>
 
 # Copia el archivo JAR generado en la etapa anterior
