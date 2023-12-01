@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - name: final-proy-container
-        image: rluna75/cloud-proyecto-final:v6
+        image: rluna75/cloud-proyecto-final:v6.3
         ports:
         - containerPort: 8080
         env:
