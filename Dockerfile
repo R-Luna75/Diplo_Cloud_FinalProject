@@ -1,11 +1,11 @@
 # Usa la imagen oficial de Maven como imagen base
-FROM maven:3.8.4-openjdk-17-slim AS build
+FROM docker.io/maven:3.8.4-openjdk-17-slim AS build
 
 ENV MONGO_HOSTNAME mongodb+srv://Rluna75:BQfqBqKJMCtMdmbo@cluster.96ny5ap.mongodb.net/unam
 ENV MONGO_DB unam
 ENV MONGO_USER Rluna75
 ENV MONGO_PWD BQfqBqKJMCtMdmbo
-ENV TOMCAT_PORT 8080
+# ENV TOMCAT_PORT 8080
 
 # Copia los archivos de configuración y el código fuente
 COPY src /usr/src/app/src
@@ -17,7 +17,7 @@ RUN mvn clean install
 # Cambia a una imagen más ligera de Java para la ejecución
 # FROM openjdk:17-jre-slim
 # FROM openjdk:17-jdk-alpine
-FROM openjdk:17-oracle
+FROM docker.io/openjdk:17-oracle
 MAINTAINER Alfonso Rivero <alfonsorivero@midas-mx.com>
 
 # Copia el archivo JAR generado en la etapa anterior

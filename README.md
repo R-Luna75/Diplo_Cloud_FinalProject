@@ -12,12 +12,8 @@ Entre los atributos que se consideran para cada de registro de libros, se encuen
 * ID
 * Nombre (char)
 * Autor (char)
-* Nacionalidad (char)
-* Género (char)
 * Calificación (float)
-* ¿Posee adaptación a película? (Bit)
 * Fecha de lanzamiento (DateTime)
-* Costo (int)
 
 Las funciones que se espera que la aplicación aplique sobre la base de datos son las siguientes:
 * Creación de nuevos registros (POST)

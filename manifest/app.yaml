@@ -7,7 +7,7 @@ data:
   db: unam
   user: Rluna75
   pwd: BQfqBqKJMCtMdmbo
-  tomcat_port: "8080"
+#  tomcat_port: "8080"
 
 ---
 
@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - name: final-proy-container
-        image: rluna75/cloud-proyecto-final:v6
+        image: rluna75/cloud-proyecto-final:v6.3
         ports:
         - containerPort: 8080
         env:
@@ -51,11 +51,11 @@ spec:
             configMapKeyRef:
               name: final-proy-configmap
               key: pwd
-        - name: TOMCAT_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: final-proy-configmap
-              key: tomcat_port
+#        - name: TOMCAT_PORT
+#          valueFrom:
+#            configMapKeyRef:
+#              name: final-proy-configmap
+#              key: tomcat_port
 
 ---
 
