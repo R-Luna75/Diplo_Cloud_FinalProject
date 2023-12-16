@@ -13,7 +13,7 @@ Entre los atributos que se consideran para cada de registro de libros, se encuen
 * Nombre (char)
 * Autor (char)
 * Calificación (float)
-* Fecha de lanzamiento (DateTime)
+* Fecha de lanzamiento (char)
 
 Las funciones que se espera que la aplicación aplique sobre la base de datos son las siguientes:
 * Creación de nuevos registros (POST)
