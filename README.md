@@ -1,8 +1,6 @@
 # Proyecto final para Diplomado Cloud de la UNAM
 ## Autor: Rodrigo Luna Esquivel
 
-Prueba 2
-
 En este repositorio se encontrará el código, referencias, y demás artefactos necesarios para probar y desplegar una aplicación nativa de Cloud y escrita en lenguaje Java principalmente.
 El funcionamiento de la aplicación se detalla a continuación.
 
@@ -51,9 +49,13 @@ En conclusión, para un proyecto de 6 personas, por lo menos deben existir las r
 
 ### Guía de despliegue
 
-`dev` branch for validate before pre-prod envviroment.
+**Docker.**
 
-### Instrucciones para ejecución
+**Kubernetes.**
+
+**Tekton.**
+
+### Instrucciones para ejecución local.
 
 Para ejecutar el proyecto en un entorno local, se pueden seguir los siguientes pasos:
 
@@ -63,7 +65,7 @@ Para ejecutar el proyecto en un entorno local, se pueden seguir los siguientes p
 * Ejecuta la aplicación desde el IDE.
 * Realizar las consultas que se deseen desde servicios como Postman o Curl.
 
-Con las configuraciones actuales de la aplicación, esta estará disponible en http://localhost:8083, aunque se puede configurar el puerto a conveniencia dentro del archivo de propiedades de Spring Boot. Actualmente, algunas de las variables relevantes para la configuración y correcto despliegue local de la aplicación, son las siguientes.
+Con las configuraciones actuales de la aplicación, esta estará disponible en http://localhost:8080, aunque se puede configurar el puerto a conveniencia dentro del archivo de propiedades de Spring Boot. Actualmente, algunas de las variables relevantes para la configuración y correcto despliegue local de la aplicación, son las siguientes.
 
 * spring.data.mongodb.host=localhost
 * spring.data.mongodb.port=27017
@@ -71,9 +73,9 @@ Con las configuraciones actuales de la aplicación, esta estará disponible en h
 * spring.data.mongodb.database=discodb
 * spring.data.mongodb.username=disco_owner
 * spring.data.mongodb.password=disco_password
-* server.port=8083
+* server.port=8080
 
-Para desplegar la aplicación en un ambiente de nube, aun se necesita profundizar sobre contenderos y docker. Esto será principalmente de ayuda para asegurar que la aplicación siempre tenga acceso a las versiones de dependencias necesarias para su correcto funcionamiento. 
+Importante detallar que dentro de esta aplicación, las variables previamente mencionadas no son explícitamente desclaradas, sino que funcionan como variables de entorno, siguiendo las buenas prácticas del desarrollo de aplicaciones nativas de nube.
 
 ### Pruebas del Servicio
 
@@ -83,7 +85,7 @@ Para probar los Endpoints de la API se pueden utilizar herramientas como Postman
 
 ```shell
 curl -X 'POST' \
-  'http://localhost:8083/api/libros' \
+  'http://localhost:8080/api/libros' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -113,7 +115,7 @@ Y el código HTTP que se espera como respuesta es: 201-Created
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8083/api/libros' \
+  'http://localhost:8080/api/libros' \
   -H 'accept: application/json'
 ```
 
@@ -145,7 +147,7 @@ Y el código HTTP que se espera como respuesta es: 200-Ok
 
 ```shell
 curl -X 'DELETE' \
-  'http://localhost:8083/api/libros/76f456d1d456156c465d6bc087' \
+  'http://localhost:8080/api/libros/76f456d1d456156c465d6bc087' \
 ```
 
 El resultado esperado para el curl anterior seria el siguiente:
@@ -160,7 +162,7 @@ Y el código HTTP que se espera como respuesta es: 204-No Content
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8083/api/libros/64f76d1d08199c722d6bc041' \
+  'http://localhost:8080/api/libros/64f76d1d08199c722d6bc041' \
   -H 'accept: application/json' \
 ```
 
@@ -182,7 +184,7 @@ Y el código HTTP que se espera como respuesta es: 200-Ok o 404-Not Found.
 
 ```shell
 curl -X 'PUT' \
-  'http://localhost:8083/api/libros/64f76d1d08199c722d6bc041' \
+  'http://localhost:8080/api/libros/64f76d1d08199c722d6bc041' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -207,8 +209,5 @@ El resultado esperado para el curl anterior seria el siguiente:
 ```
 
 Y el código HTTP que se espera como respuesta es: 200-Ok o 404-Not Found.
-
-Como nota, el puerto que se plantea utilizar para la aplicación sería el 8083, aunque está sujeto a cambios y será actualizado en esta documentación.
-Por otro lado, en el archivo API_Documentation_Example.yaml se muestran las especificaciones de una API que corresponde a una aplicación con funcionalidades muy similares a las que se plantean en este repositorio. Se recomienda revisar este archivo para darse una idea sobre las especificaciones que tendrá la API de esta aplicación una vez que haya terminado su desarrollo. Cuando las especificaciones finales esten listas, se añadirá en este repositorio un archivo YAML similar al del ejemplo, pero con las características reales de la aplicación.
 
 
