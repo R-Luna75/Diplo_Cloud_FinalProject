@@ -30,12 +30,10 @@ Existen varias justificaciones para asegurar que la aplicación que se plantea e
 1. El Código Base de la aplicación ya se encuentra en un repositorio desde donde se puede realizar control de versiones y despliegues.
 2. Las dependencias de la aplicación esta correctamente aisladas y explícitamente definidas dentro de ella.
 3. Las configuraciones de la aplicación se realizan dentro del entorno y no externamente.
-5. Gracias a las dependencias que se hacen uso para la aplicación, la etapa de construcción y ejecución pueden ser perfectamente separables.
-9. La aplicación es perfectamente escalable sin la intervención externa, una vez ya ejecutándose.
-10. El inicio y cierre rápido de la aplicación es asegurado gracias a su simplicidad.
-11. Se espera que el desarrollo y producción de la aplicación sean similares gracias al uso de dependencias que ayudan al desarrollo y pruebas de la aplicación.
-
-El resto de características necesarias para asegurar que la aplicación sea nativa de nube aun están por cumplirse con el resto del desarrollo del proyecto.
+4. Gracias a las dependencias que se hacen uso para la aplicación, la etapa de construcción y ejecución pueden ser perfectamente separables.
+5. La aplicación es perfectamente escalable sin la intervención externa, una vez ya ejecutándose.
+6. El inicio y cierre rápido de la aplicación es asegurado gracias a su simplicidad.
+7. Se espera que el desarrollo y producción de la aplicación sean similares gracias al uso de dependencias que ayudan al desarrollo y pruebas de la aplicación.
 
 ### Estrategia de Ramas
 
@@ -46,14 +44,6 @@ Luego, dependiendo del trabajo que tenga cada una de las 6 personas del equipo, 
 Finalmente, debe haber Ramas para Corrección de Errores críticos para producción (Hotfix). Estas ramas son para solucionar errores urgentes de la rama de producción (Main) sin la necesidad de crear nuevas ramas de características (features), y sin afectar el desarrollo de otras ramas. La cantidad de ramas Hotfix va a depender de la cantidad de veces que haya que solucionar problemas de este tipo. 
 
 En conclusión, para un proyecto de 6 personas, por lo menos deben existir las ramas de desarrollo (Main) y de producción (Dev). Alternamente, van a existir una cierta cantidad de ramas de características (features) y para solución de errores (Hotfix), las cuales se van a ir creando conforme el proyecto las vaya requiriendo. Es importante señalar que lo óptimo para las ramas de características y de solución de errores es que cada rama sea trabajada por un solo integrante del proyecto. 
-
-### Guía de despliegue
-
-**Docker.**
-
-**Kubernetes.**
-
-**Tekton.**
 
 ### Instrucciones para ejecución local.
 
@@ -76,6 +66,74 @@ Con las configuraciones actuales de la aplicación, esta estará disponible en h
 * server.port=8080
 
 Importante detallar que dentro de esta aplicación, las variables previamente mencionadas no son explícitamente desclaradas, sino que funcionan como variables de entorno, siguiendo las buenas prácticas del desarrollo de aplicaciones nativas de nube.
+
+### Guía de despliegue
+
+#### Docker
+
+Para el despliegue con Docker, se necesita primeramente clonar este repositorio con la instrucción.
+
+```shell
+git clone https://github.com/R-Luna75/Diplo_Cloud_FinalProject
+```
+
+Luego, se debe construir la imágen con el Dockerfile que fue clonado del repositorio en el paso anterior. 
+Para esto, se utiliza el siguiente comando. Como nota, la version declarada en el nombre de la imagen (v1 en este caso), puede cambiar según la versión que el usuario final desee declarar. 
+
+```shell
+docker build -t rluna75/cloud-proyecto-final:v1 .
+```
+
+Como paso opcional, el usuario final puede decidir si subir esta imagen a su propio repositorio Docker con las siguientes instrucciones. En este caso, deberán utilizar sus credenciales y ajustar el nombre de la imagen de acuerdo a su repositorio. 
+
+```shell
+docker login
+docker push rluna75/cloud-proyecto-final:v1
+```
+
+Luego, el contenedor debe correr. En este caso, se selecciona el puerto 8081 desde donde estará expuesto el servicio. 
+
+```shell
+docker run -p 8081:8080 rluna75/cloud-proyecto-final:v1
+```
+
+Para verificar el funcionamiento de la aplicación, se puede hacer uso de cualquiera de los CURL que se mencionan en la sección de **Pruebas de servicio**, todo desde una terminal conectada a donde está corriendo el contenedor, y especificando el puerto donde está expuesta la aplicación. Por ejemplo:
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8081/api/libros' \
+  -H 'accept: application/json'
+```
+
+#### Kubernetes
+
+Para desplegar la aplicación utilizando Kuernetes, simplemente se necesita aplicar el archivo YAML general que se encuentra en la carpeta Manifest de este repositorio. También se pueden aplicar los archivos YAML individuales que se encuentran en la misma carpeta y que corresponden a la configuración del servicio, el configmap, y el deployment de la aplicación. 
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/R-Luna75/Diplo_Cloud_FinalProject/main/manifest/app.yaml
+```
+
+En el caso de este despliegue, se estaría utilizando la versión más actualizada de la imagen de la aplicación que se encuentre en mi repositorio de Docker personal (rluna75), que actualmente es la v6.3. Si se desea cambiar la version de la imagen, se debe modificar el archivo YAML app.yaml para que considere una imagen distinta de la aplicación.
+
+En este caso, el usuario final también podría seguir los pasos de la Guía de despliegue para Docker, subir su imagen propia a su repositiorio personal, y utilizar configurar el archivo app.yaml para que en el despliegue con Kubernetes, se utilice la nueva imagen creada por el usuario. 
+
+Finalmente, para comprobar este servicio, se puede utilizar el siguiente comando para exponer la aplicación en un determinado puerto.
+
+```shell
+kubectl port-forward final-proy-deployment-id 8081:8080
+```
+
+En este caso, el puerto expuesto es el 8081. Como nota adicional, el **final-proy-deployment-id** se refiere al númbre alfanumérico que Kubernetes asignó al deployment creado con estas instrucciones.
+
+Luego, desde otra terminal se puede hacer uso de cualquiera de los CURL que se mencionan en la sección de **Pruebas de servicio**. Por ejemplo:
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8081/api/libros' \
+  -H 'accept: application/json'
+```
+
+#### Tekton
 
 ### Pruebas del Servicio
 
