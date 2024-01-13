@@ -135,6 +135,92 @@ curl -X 'GET' \
 
 #### Tekton
 
+Para el despliegue de la aplicación en Tekton, se necesitan configurar varios archvicos YAML.
+
+Primero, se deben crear las tareas que se van a realizar. Para el caso de esta aplicación, son 5 las tareas que se van ejecutar en el siguiente orden:
+
+1. git-clone. Se clona este repositorio dentro del entorno de Tekton.
+2. list-directory. Se enlistan los elementos de este repositorio para comprobar que se haya clonado la rama correcta.
+3. maven. Se compila el proyecto utilizando una cierta imagen de Maven.
+4. buldah-run-final. La aplicación ya construida se manda a un contenedor y es subida a un repositorio Docker, en este caso el mío. 
+5. kubernetes. Se despliega en el entorno de Tekton la última versión de la aplicación atraves de Kubernetes.
+
+Para aplicar estas tareas, se debe colocar lo siguiente:
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.9/git-clone.yaml
+kubectl apply -f https://raw.githubusercontent.com/R-Luna75/Diplo_Cloud_FinalProject/main/manifest/tekton/task-list-directory.yaml
+kubectl apply -f https://api.hub.tekton.dev/v1/resource/tekton/task/maven/0.3/raw
+kubectl apply -f https://api.hub.tekton.dev/v1/resource/tekton/task/buildah/0.6/raw
+kubectl apply -f https://api.hub.tekton.dev/v1/resource/tekton/task/kubernetes-actions/0.2/raw
+```
+
+Se necesita además crear un secret para acceder correctamente al repositorio Docker. La forma más simple de hacerlo es por medio de un archivo de configuración en el que ya estén previamente guardadas las credenciales para el repositorio. 
+
+```shell
+kubectl create secret generic seccer --from-file=.dockerconfigjson=<path/to/.docker/config.json> --type=kubernetes.io/dockerconfigjson
+```
+
+Luego, se debe crear una Service Account, darle los permisos necesarios, y editarla para incluir al Secret llamado "seccer" preciamente creado.
+
+```shell
+oc create sa tekton-pipeline
+oc adm policy add-role-to-user edit -z tekton-pipeline 
+oc adm policy add-scc-to-user privileged -z tekton-pipeline
+```
+
+El YAML de la Service Account debería ser similar a esto
+
+```yaml
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: tekton-pipeline
+  namespace: user8
+secrets:
+  - name: seccer
+  - name: tekton-pipeline-dockercfg-vz6c4
+imagePullSecrets:
+  - name: seccer
+  - name: tekton-pipeline-dockercfg-vz6c4
+```
+
+A continnuación, se debe crear una pipeline con una cierta estructura YAML.
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/R-Luna75/Diplo_Cloud_FinalProject/main/manifest/tekton/pipeline-finalproy-pipeline.yaml
+```
+
+Despues, se deben configurar los Triggers. 
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/R-Luna75/Diplo_Cloud_FinalProject/main/manifest/triggers/tekton-trigger-RBAC.yaml
+kubectl apply -f https://raw.githubusercontent.com/R-Luna75/Diplo_Cloud_FinalProject/main/manifest/triggers/tekton-trigger-template.yaml
+kubectl apply -f https://raw.githubusercontent.com/R-Luna75/Diplo_Cloud_FinalProject/main/manifest/triggers/tekton-trigger-binding.yaml
+kubectl apply -f https://raw.githubusercontent.com/R-Luna75/Diplo_Cloud_FinalProject/main/manifest/triggers/tekton-event-listener.yaml
+```
+
+Además, se debe exponer el Event-Listener svc como ruta.
+
+```shell
+oc expose svc/el-tekton-event-listener -n tekton-demo
+```
+
+Finalmente, se debe crear el WebHook en un cierto Git, y copiar ahí el URL externo publicado por el elemento Route del Event Listener.
+
+De esta forma, cada vez que se haga un push a ese repositorio, en Tekton se actualizara el despliegue de la aplicación con la nueva versión publicada. 
+Luego de que tekton haya terminado de desplegar la aplicación, se creará un pod donde podemos cosultar sus funcionalidades. Desde este pod podemos acceder a su terminal y ejecutar cualquiera de los CURL que se mencionan en la sección de **Pruebas de servicio**. Por ejemplo:
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8080/api/libros' \
+  -H 'accept: application/json'
+```
+
+Notar que en este caso, el puerto con el que se comunica la aplicación es el 8080. 
+
+Por otro lado, la aplicación también puede ser expuesta a otro puerto, o bien puede accederse a ella desde otro Pod, únicamente haciendo referencia a la IP donde está funcionando el pod de la aplicación.
+
 ### Pruebas del Servicio
 
 Para probar los Endpoints de la API se pueden utilizar herramientas como Postman o Curl. Por fines de practicidad, a continuación se detallan algunos ejemplos de Curls con los que se espera que la aplicación trabaje apropiadamente gracias a los métodos definidos en su interfaz API.
