@@ -1,0 +1,19 @@
+﻿apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: tekton-trigger-binding
+  namespace: user8
+spec:
+  params:
+    - name: url
+      value: $(body.repository.clone_url)
+    - name: tag-name
+      value: main
+    - name: image-full-path-with-tag
+      value: 'docker.io/rluna75/cloud-proyecto-final:v6.3'
+    - name: deployment-script
+      value: >-
+        https://raw.githubusercontent.com/R-Luna75/Diplo_Cloud_FinalProject/main/manifest/app.yaml
+    - name: maven-image
+      value: >-
+        gcr.io/cloud-builders/mvn@sha256:8f38a2667125a8d83f6e1997847fedb6a06f041c90e2244884153d85d95f869b

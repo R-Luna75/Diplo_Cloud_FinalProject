@@ -1,0 +1,95 @@
+﻿apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: finalproy-pipeline
+  namespace: user8
+spec:
+  params:
+    - name: url
+      type: string
+    - name: tag-name
+      type: string
+    - name: maven-image
+      type: string
+    - name: image-full-path-with-tag
+      type: string
+    - name: deployment-script
+      type: string
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: $(params.url)
+        - name: revision
+          value: $(params.tag-name)
+        - name: deleteExisting
+          value: 'true'
+      taskRef:
+        kind: Task
+        name: git-clone
+      workspaces:
+        - name: output
+    - name: list-directory
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: Task
+        name: list-directory
+      workspaces:
+        - name: directory
+    - name: maven
+      params:
+        - name: GOALS
+          value:
+            - '-B'
+            - '-DskipTests'
+            - clean
+            - package
+        - name: MAVEN_IMAGE
+          value: $(params.maven-image)
+      runAfter:
+        - list-directory
+      taskRef:
+        kind: Task
+        name: maven
+      workspaces:
+        - name: maven-settings
+        - name: source
+    - name: buildah-run-final
+      params:
+        - name: IMAGE
+          value: $(params.image-full-path-with-tag)
+        - name: TLSVERIFY
+          value: 'false'
+        - name: STORAGE_DRIVER
+          value: vfs
+      runAfter:
+        - maven
+      taskRef:
+        kind: Task
+        name: buildah
+      workspaces:
+        - name: source
+    - name: kubernetes-actions-final
+      params:
+        - name: script
+          value: |
+            kubectl delete deployment final-proy-deployment
+            kubectl apply -f $(params.deployment-script)
+            echo "----------"
+            kubectl get deployment
+      runAfter:
+        - buildah-run-final
+      taskRef:
+        kind: Task
+        name: kubernetes-actions
+      workspaces:
+        - name: kubeconfig-dir
+        - name: manifest-dir
+  workspaces:
+    - name: output
+    - name: directory
+    - name: maven-settings
+    - name: source
+    - name: kubeconfig-dir
+    - name: manifest-dir

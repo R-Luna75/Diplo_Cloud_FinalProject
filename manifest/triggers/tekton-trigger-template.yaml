@@ -1,0 +1,64 @@
+﻿apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: tekton-trigger-template
+  namespace: user8
+spec:
+  params:
+    - description: The git repository URL to clone from.
+      name: url
+    - description: The git tag to clone.
+      name: tag-name
+    - description: >-
+        The image full path to host the built image, with version tag, e.g.
+        image-registry.openshift-image-registry.svc:5000/tekton-pipelines/spring-boot-docker:v1.0.0.
+      name: image-full-path-with-tag
+    - description: The script file for deployment.
+      name: deployment-script
+    - description: The maven image to use for compile and build
+      name: maven-image
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: finalproy-pipelinerun-deploy-
+      spec:
+        params:
+          - name: url
+            value: $(tt.params.url)
+          - name: tag-name
+            value: $(tt.params.tag-name)
+          - name: image-full-path-with-tag
+            value: $(tt.params.image-full-path-with-tag)
+          - name: deployment-script
+            value: $(tt.params.deployment-script)
+          - name: maven-image
+            value: $(tt.params.maven-image)
+        pipelineRef:
+          name: finalproy-pipeline
+        serviceAccountName: pipeline
+        taskRunSpecs:
+          - pipelineTaskName: buildah-run-final
+            taskServiceAccountName: tekton-pipeline
+        workspaces:
+          - configmap:
+              name: maven-settings
+            name: maven-settings
+          - name: workspace
+            persistentvolumeclaim:
+              claimName: shared-workspace
+          - emptyDir: {}
+            name: empty-dir
+          - name: output
+            persistentVolumeClaim:
+              claimName: shared-workspace
+          - name: directory
+            persistentVolumeClaim:
+              claimName: shared-workspace
+          - name: source
+            persistentVolumeClaim:
+              claimName: shared-workspace
+          - emptyDir: {}
+            name: kubeconfig-dir
+          - emptyDir: {}
+            name: manifest-dir
